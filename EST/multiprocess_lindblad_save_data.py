@@ -52,7 +52,7 @@ def lindblad_savedata(k_value):
 
         # For fixed k a given number (iterations) of Lindbladian matrices are constructed. For each
         # matrix, cycling on t with a fixed t_step, the negativity of entanglement is computed.
-        # To achieve some informations about the dependency of t_ent from the eigenvalues of the map
+        # To achieve some information about the dependency of t_ent from the eigenvalues of the map
         # phi(t_ent), the eigenvalues of that superoperator at that time are also saved.
         for iteration in range(iterations):
             RM_D = np.array(qutip.rand_dm_ginibre((N**2-1), rank=None))
