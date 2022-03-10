@@ -1,7 +1,7 @@
-''' In this program we study the correlations between the inverse of the maximum Lindbladian
-    eigenvalue, in modulo, and the entanglement survival time.
+''' In this program we study the correlations between the inverse of the Lindbladian eigenvalue
+    with the minimum real part, in modulo, excluding the null eigenvalue, and the entanglement
+    survival time.
 '''
-
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import spearmanr
@@ -9,7 +9,7 @@ from scipy.stats import pearsonr
 import seaborn as sns
 from lindblad import *
 
-####################################     DATA COLLECTION      ####################################
+#####################################     DATA COLLECTION      #####################################
 # Save the data on file: Lindbladian eigenvalues and entanglement survival time.
 if False:
     N = 2
@@ -71,10 +71,10 @@ if False:
         f_t_ent.close()
 
 
-###################################################      PLOT      ###################################################
+##########################################      PLOT      ##########################################
 if True:
     N = 2
-    k_list = [0.5]#,1,1.5,2,2.5,3,5,10]
+    k_list = [0.5,1,2,5]
     iterazioni = 2000
 
     alpha = 1
@@ -86,7 +86,7 @@ if True:
         # gamma = alpha/k
 
         # Writing in a list the maximum eigenvalue of L 
-        Lind_eigval_max_txt = f"{path}\\Autov max L per N = {N}, alpha = {alpha}, gamma = {gamma}, {iterazioni} iterazioni"+'.txt'
+        Lind_eigval_max_txt = f"{path}\\Autov max L per N = {N}, alpha = {alpha}, gamma = {gamma}, {iterazioni} iterazioni.txt"
         f_Lind_eigval_max = open(Lind_eigval_max_txt, 'r')
         eigval_max = f_Lind_eigval_max.read()
         eigval_max_list = list(np.fromstring(eigval_max, sep = '\n'))
@@ -101,7 +101,7 @@ if True:
 
         # Writing in a list the entanglement survival time, t_ent, corresponding to the Lindbladian\
         # of which I know the inverse of the maximum eigenvalue
-        t_ent_txt = f"{path}\\t_ent per N = {N}, alpha = {alpha}, gamma = {gamma}, {iterazioni} iterazioni"+'.txt'
+        t_ent_txt = f"{path}\\t_ent per N = {N}, alpha = {alpha}, gamma = {gamma}, {iterazioni} iterazioni.txt"
         f_t_ent = open(t_ent_txt, 'r')
         t_ent = f_t_ent.read()
         t_ent_list = list(np.fromstring(t_ent, sep = '\n'))
@@ -113,29 +113,14 @@ if True:
         print(f'correlation_pearson = {correlation_pear}')
         print(f'correlation_spearman = {correlation_spear}')
 
-        # SCATTER
-        # plt.scatter(inverse_eigval_max_list,t_ent_list)
-        # sns.lmplot(x=inverse_eigval_max_list, y=t_ent_list)
-        p1 = sns.jointplot(x=inverse_eigval_max_list, y=t_ent_list, kind='reg', label = f'k={k}'+'\n'+'REG')
-        p1.fig.suptitle(fr'1/|$\lambda_{{max}}$| vs $\tau_{{ent}}$ - distribution and correlations - k={k}')
-        p1.fig.tight_layout()
+
+        p1 = sns.jointplot(x=inverse_eigval_max_list, y=t_ent_list, kind='reg')
+        p1.fig.suptitle(fr'1/|$\lambda_{{max}}$| vs $\tau_{{ent}}$'\
+            fr' - distributions and correlations - k={k}', fontsize=28)
+        p1.ax_joint.legend([f'Spearman correlation = {np.round(correlation_spear[0],2)}; p-value = {correlation_spear[1]:.1E}'],\
+            fontsize=20)
+
         p1.fig.subplots_adjust(top=0.93)
 
-        # # HEX
-        # p1 = sns.jointplot(x=inverse_eigval_max_list, y=t_ent_list, kind='hex', label = f'k={k}'+'\n'+'HEX')
-        # p1.fig.suptitle(fr'1/$\lambda_{{max}}$ vs $\tau_{{ent}}$ - distribution and correlations')
-        # p1.fig.tight_layout()
-        # p1.fig.subplots_adjust(top=0.93)
-
-        # # KDE
-        p1 = sns.jointplot(x=10*np.array(inverse_eigval_max_list), y=t_ent_list, kind='kde', label = f'k={k}'+'\n'+'KDE')
-        p1.fig.suptitle(fr'1/$\lambda_{{max}}$ vs $\tau_{{ent}}$ - distribution and correlations')
-        p1.fig.tight_layout()
-        p1.fig.subplots_adjust(top=0.93)
-
-
-        # p2 = sns.jointplot(x=t_ent_list, y=y_value, kind='scatter', label = f'k={k}')
-        # p2.fig.suptitle(fr'$\tau_{{ent}}$ vs 1/$\lambda_{{max}}$ + 1/$\lambda_{{max2}}$ - distribution and correlations')
-
-        plt.legend()
+    
         plt.show()
