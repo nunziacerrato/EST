@@ -24,7 +24,6 @@ def fit_function(x,Theta1,Theta2,Theta3):
     return (Theta1*Theta3 + Theta2*(x**2))/(Theta3 + (x**2))
 
 
-
 def min_t_ent_plot(x_values, k_max, plot_res = True):
     '''Plot the scatterplot of min_t_ent(alpha) until alpha = k_max with errors equals to 1 sigma,
     the fit function using as fit parameters the ones estimated with MINITAB, and the upper bound
@@ -58,10 +57,10 @@ def min_t_ent_plot(x_values, k_max, plot_res = True):
     plt.plot(x_values_continue, fit_function(x_values_continue,Theta1_plus,Theta2_plus,Theta3_plus),\
         color='green', linestyle='dashed')
     
-    plt.xlabel(fr'$\alpha$')
-    plt.ylabel(fr'$<min(\tau_{{ent}})>$')
-    plt.title(fr'$<min(\tau_{{ent}})>(\alpha)$ with fit curve - 95% CI')
-    plt.legend()
+    plt.xlabel(fr'$\alpha$', fontsize = 16)
+    plt.ylabel(fr'$<min(\tau_{{ent}})>$', fontsize = 16)
+    plt.title(fr'$<min(\tau_{{ent}})>(\alpha)$ with fit curve - 95% CI', fontsize = 18)
+    plt.legend(fontsize = 14)
 
     if plot_res == True:
         
@@ -69,7 +68,7 @@ def min_t_ent_plot(x_values, k_max, plot_res = True):
         residuals = min_t_ent - fitted_values
 
         fig_all, ax_all = plt.subplots(nrows=2, ncols=2)
-        fig_all.suptitle(fr'Residual Plots for <min($\tau_{{ent}}$)>')
+        fig_all.suptitle(fr'Residual Plots for <min($\tau_{{ent}}$)>', fontsize = 18)
 
         # Plot Normal Probability Plot
         # fig_npp, ax_npp = plt.subplots()
@@ -143,10 +142,10 @@ def Me_t_ent_plot(x_values, k_max, plot_res = True):
     plt.plot(x_values_continue, fit_function(x_values_continue,Theta1_plus,Theta2_plus,Theta3_plus),\
         color='green', linestyle='dashed')
     
-    plt.xlabel(fr'$\alpha$')
-    plt.ylabel(fr'$<Me(\tau_{{ent}})>$')
-    plt.title(fr'$<Me(\tau_{{ent}})>(\alpha)$ with fit curve - 95% CI')
-    plt.legend()
+    plt.xlabel(fr'$\alpha$', fontsize = 16)
+    plt.ylabel(fr'$<Me(\tau_{{ent}})>$', fontsize = 16)
+    plt.title(fr'$<Me(\tau_{{ent}})>(\alpha)$ with fit curve - 95% CI', fontsize = 18)
+    plt.legend(fontsize = 14)
 
     if plot_res == True:
         
@@ -154,7 +153,7 @@ def Me_t_ent_plot(x_values, k_max, plot_res = True):
         residuals = Me_t_ent - fitted_values
 
         fig_all, ax_all = plt.subplots(nrows=2, ncols=2)
-        fig_all.suptitle(fr'Residual Plots for <Me($\tau_{{ent}}$)>')
+        fig_all.suptitle(fr'Residual Plots for <Me($\tau_{{ent}}$)>', fontsize = 18)
 
         # Plot Normal Probability Plot
         # fig_npp, ax_npp = plt.subplots()
@@ -227,10 +226,10 @@ def mean_t_ent_plot(x_values, k_max, plot_res = True):
     plt.plot(x_values_continue, fit_function(x_values_continue,Theta1_plus,Theta2_plus,Theta3_plus),\
         color='green', linestyle='dashed')
     
-    plt.xlabel(fr'$\alpha$')
-    plt.ylabel(fr'$<mean(\tau_{{ent}})>$')
-    plt.title(fr'$<mean(\tau_{{ent}})>(\alpha)$ with fit curve - 95% CI')
-    plt.legend()
+    plt.xlabel(fr'$\alpha$', fontsize = 16)
+    plt.ylabel(fr'$<mean(\tau_{{ent}})>$', fontsize = 16)
+    plt.title(fr'$<mean(\tau_{{ent}})>(\alpha)$ with fit curve - 95% CI',fontsize = 18)
+    plt.legend(fontsize = 14)
 
     if plot_res == True:
         
@@ -238,7 +237,7 @@ def mean_t_ent_plot(x_values, k_max, plot_res = True):
         residuals = mean_t_ent - fitted_values
 
         fig_all, ax_all = plt.subplots(nrows=2, ncols=2)
-        fig_all.suptitle(fr'Residual Plots for <mean($\tau_{{ent}}$)>')
+        fig_all.suptitle(fr'Residual Plots for <mean($\tau_{{ent}}$)>',fontsize = 18)
 
         # Plot Normal Probability Plot
         # fig_npp, ax_npp = plt.subplots()
@@ -278,17 +277,10 @@ def mean_t_ent_plot(x_values, k_max, plot_res = True):
     plt.show()
 
 
-
-
-
-
-
 if __name__ == '__main__':
     alpha_values = list(df_fromexcel['alpha'])
-    k_max = 1000
+    k_max = 30
     min_t_ent_plot(alpha_values, k_max)
     Me_t_ent_plot(alpha_values, k_max)
     mean_t_ent_plot(alpha_values, k_max)
-
-
 
