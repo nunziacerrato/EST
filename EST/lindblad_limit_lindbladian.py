@@ -1,10 +1,11 @@
-import time
+''' This program creates the limit Lindbladian in interaction picture as a superoperator acting on an 
+    input matrix and then computes it matrix expression. This code should be intended as a library.
+    The limit Lindbladian is defined as the expression of the Lindbladian where the alpha parameter
+    tends to infinity.
+'''
 import math
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import tenpy
-import qutip
 from lindblad import *
 
 ######################################### RHO CONST ###############################################
@@ -58,7 +59,7 @@ def Limit_Lindbladian_interact_pict(N,RM_D,RM_H,matrix,gamma):
 
     Lind_lim = np.zeros((N,N), dtype=complex)
 
-
+    # Compute the terms that made up the limit Lindbladian
     for k in range(N**2 -1):
         l = np.zeros((N,N), dtype=complex)
         for m in range(N**2 -1):
@@ -92,7 +93,6 @@ def Limit_Lindbladian_interact_pict(N,RM_D,RM_H,matrix,gamma):
     
     return Lind_lim
 
-
 def Limit_Lindbladian_matrix_interact_pict(N,RM_D,RM_H,gamma):
     ''' Function that calculates the matrix associated with Lindblad’s superoperator written with
         respect to the Hilbert-Schmidt matrix base. Called F[m] these matrices, for m = 1,...,N**2,
@@ -123,142 +123,3 @@ def Limit_Lindbladian_matrix_interact_pict(N,RM_D,RM_H,gamma):
             lindbladian_matr[m,n] = np.trace(A)
 
     return lindbladian_matr
-
-
-
-if __name__ == '__main__':
-    
-    # Set parameters:
-    N = 2
-    gamma = 1
-    t_max = 2.0
-    t_step = 0.001
-    common_path = 'C:\\Users\\cerra\\Documents\\GitHub\\lindblad_data\\limit_lindbladian'
-    
-    for iter_ in range(20):
-        print(f'iter = {iter_}')
-        counts = 0
-        # Plot of neg_ent(t) - Lindbladian for different values of alpha:
-        if True:
-            # Set random matrices
-            RM_D = np.array(qutip.rand_dm_ginibre((N**2-1), rank=None))
-            RM_H = tenpy.linalg.random_matrix.GUE((N,N))
-
-            # Plot of neg_ent(t)
-            fig, ax = plt.subplots(figsize=(15,10))
-            alpha_list = [0.001,0.01,0.1,1,3,5,10,100,1e3,1e4,1e5,1e6]#,1e7,1e8,1e9,1e10]
-            t_ent_list = []
-            for alpha in alpha_list:
-                Lind_matr = Lindbladian_matrix(N,RM_D,RM_H,alpha,gamma)
-                neg_ent_list = []
-                t_list = []
-                t = 0
-                counts = 0
-                while (t<t_max):
-                    neg_ent = negat_ent(N,Lind_matr,t)
-                    neg_ent_list.append(neg_ent)
-                    t_list.append(t)
-                    if np.abs(np.real(neg_ent)) < 1e-12 and alpha == alpha_list[-1] and counts == 0:
-                        t_ent_alpha_max = t
-                        print(f'alpha = {alpha:.1E}, t_ent = {t}')
-                        ax.text(1.75, 0.23, fr'$\tau_{{ent}}$ for $\alpha=1e6$ = {np.round(t,3)}', fontsize=10)
-                        counts = 1
-                    t += t_step
-
-                ax.plot(t_list, neg_ent_list, label = f'alpha = {alpha:.1E}')
-
-
-            # Plot of neg_ent(t) with limit Lindbladian that does not depends on alpha
-            if True:
-                Lind_lim_matr = Limit_Lindbladian_matrix_interact_pict(N,RM_D,RM_H,gamma)
-                neg_ent_lim_list = []
-                t_lim_list = []
-                # t_ent_lim = []
-                t = 0
-                counts = 0
-                while (t<t_max):
-                    neg_ent_lim = negat_ent(N,Lind_lim_matr,t)
-                    neg_ent_lim_list.append(neg_ent_lim)
-                    t_lim_list.append(t)
-                    if np.abs(np.real(neg_ent_lim)) < 1e-12 and counts == 0:
-                        t_ent_lim = t
-                        print(f'alpha_lim, t_ent = {t}')
-                        ax.text(1.75, 0.21, fr'$\tau_{{ent}}$ for Lind_lim = {np.round(t,3)}', fontsize=10)
-                        counts = 1
-                    t += t_step
-                ax.plot(t_lim_list, neg_ent_lim_list, color = 'k', linestyle = 'dashed', label = f'Lind_limit')
-        
-
-                ax.set_title(fr'$neg_{{ent}} (t)$')
-                ax.set_xlabel('t')
-                ax.set_ylabel(fr'$neg_{{ent}}$')
-                ax.legend()
-
-                if t_ent_lim > t_ent_alpha_max:
-                    print(f'error for iter = {iter_}')
-                else:
-                    print('good')
-
-                plt.savefig(f'C:\\Users\\cerra\\Desktop\\Problems_LL\\new_LL_iter={iter_+1}')
-
-    plt.show()
-
-
-
-    # Percentili
-    if False:
-        alpha_list = [0,0.1,0.3,0.5,0.7,1,1.5,5,10,50,100,250,500]
-        fixed = 'g'
-        fixed_val = 1
-        gamma = fixed_val
-        iterations = 20000
-
-        t_max = 15
-        t_step = 0.001
-        common_path = 'C:\\Users\\cerra\\Documents\\GitHub\\lindblad_data'
-
-        N = 2
-        RM_D = np.array(qutip.rand_dm_ginibre((N**2-1), rank=None))
-        RM_H = tenpy.linalg.random_matrix.GUE((N,N))
-        
-        t_ent_list = []
-        percentile_list = []
-        for alpha in alpha_list:
-            
-            Lind_matr = Lindbladian_matrix(N,RM_D,RM_H,alpha,gamma)
-            neg_ent_list = []
-            t_list = []
-            t = 0
-            while (t<t_max):
-                neg_ent = negat_ent(N,Lind_matr,t)
-                neg_ent_list.append(neg_ent)
-                t_list.append(t)
-                if np.abs(np.real(neg_ent)) < 1e-12:
-                    print(f'alpha = {alpha:.1E}, t_ent = {t}')
-                    t_ent_list.append(t)
-                    break
-                t += t_step
-
-
-            k_value = alpha
-            # Create a DataFrame from the excel file where all the data are saved
-            df_fromexcel = pd.read_excel(f'{common_path}\\{fixed}_fixed_comparable_data\\{fixed}={fixed_val}\\'\
-            f'Lindblad_eigvals_t_ent_{fixed}_fixed_k_{k_value}_{iterations}_iterations_N_{N}.xlsx')
-            
-            # Access to the column 't_ent' and drop NaN values if present
-            t_ent_values_in = list(df_fromexcel['t_ent'].dropna().values)
-            t_ent_values = t_ent_values_in
-            t_ent_values.sort()
-            
-            while len(t_ent_values)!=1:
-                t_ent_values_central = t_ent_values[int(len(t_ent_values)/2)-1]
-                if t <= t_ent_values_central:
-                    t_ent_values = t_ent_values[:int(len(t_ent_values)/2)]
-                else:
-                    t_ent_values = t_ent_values[int(len(t_ent_values)/2):]
-            
-            index_ = t_ent_values_in.index(t_ent_values[0])
-            percentile = index_/iterations
-            percentile_list.append(percentile)
-            print(f'alpha = {alpha}, percentile = {percentile}')
-                
