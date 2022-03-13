@@ -8,6 +8,20 @@ from lindblad.lindblad import *
 
 class TestLindblad(unittest.TestCase):
 
+    def test_matr_baseHS(self):
+        ''' Test for the basis of matrices orthonormal with respect to the Hilbert-Schmidt product.
+        '''
+        N=2
+        matrix_basis = F_matr_base_hs(N)
+        for i in range(N**2):
+            for j in range(N**2):
+                if j < i:
+                    self.assertLess(np.trace(matrix_basis[i]@matrix_basis[j]), 1e-9,\
+                        "The Hilbert-Schmidt scalar product between different matrices must be zero")
+                if j == i: 
+                    self.assertLess(np.trace(matrix_basis[i]@matrix_basis[j]) - 1, 1e-9,\
+                        "The Hilbert-Schmidt scalar product between identical matrices must be one")
+
     def test_dissipator_eigvals(self):
         """ Test for the dissipator: tests if there are N**2 eigenvalues with the following properties:
             1) there always exist the null eigenvalue;
