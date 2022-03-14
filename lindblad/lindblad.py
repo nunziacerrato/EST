@@ -80,7 +80,7 @@ def matrix_to_HS(N,matrix):
     return coeff_vect
 
 def Dissipator(N,RM_D,matrix):
-    ''' Function that creates the dissipator as a superoperator acting on the input matrix, starting
+    r''' Function that creates the dissipator as a superoperator acting on the input matrix, starting
         from the Kossakowki matrix constructed from a random matrix sampled from the Ginibre ensemble.
         Here it is ensured that the trace of the Kossakowski matrix is equal to N.
             Parameters:

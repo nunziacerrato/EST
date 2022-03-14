@@ -10,6 +10,8 @@ class TestLindblad(unittest.TestCase):
 
     def test_matr_baseHS(self):
         ''' Test for the basis of matrices orthonormal with respect to the Hilbert-Schmidt product.
+            It is verified if the Hilbert-Schmidt scalar product between different matrices is equal
+            to zero and, analogously, if it is equal to one for identical matrices.
         '''
         N=2
         matrix_basis = F_matr_base_hs(N)
