@@ -222,7 +222,7 @@ def Lindbladian_matrix(N,RM_D,RM_H,alpha,gamma):
         Returns
         -------
         out : ndarray
-                Lindbladian matrix of dimension :math:`(N^2 x N^2)`, written in the Hilbert-Schmidt
+                Lindbladian matrix of dimension :math:`(N^2 \times N^2)`, written in the Hilbert-Schmidt
                 matrix base.
     '''
     FF = F_matr_base_hs(N)
