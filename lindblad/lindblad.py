@@ -1,37 +1,45 @@
-''' Library that implements some basic functions to study the properties of an open quantum system.
+''' This library implements some basic functions to study the properties of an open quantum system.
 '''
 import numpy as np
 import qutip
 
 def E_matr_base_can(N,i,j):
-    ''' Function that constructs a matrix of the canonical basis of matrices in dimension N,
-        with a 1 in position (i, j).
-            Parameters: 
-                    N : int
-                        Dimension of the matrix space.
-                    i : int
-                        Row index.
-                    j : int
-                        Column index.
-            Returns:
-                out : ndarray
-                      Matrix of the computational basis of dim. N with a 1 in the position (i,j).
+    r''' Function that constructs a matrix of the canonical basis of matrices in dimension :math:`N`,
+        with a :math:`1` in position :math:`(i, j)`.
+
+        Parameters
+        ----------
+        N : int
+            Dimension of the matrix space.
+        i : int
+            Row index.
+        j : int
+            Column index.
+
+        Returns
+        -------
+        out : ndarray
+            Matrix of the computational basis of dim. :math:`N` with a :math:`1` in the position :math:`(i,j)`.
     '''
     E = np.zeros((N,N))
     E[i][j] = 1
     return E
 
 def F_matr_base_hs(N):
-    ''' Function that creates an array of dimension (N**2 x N x N) made up of N**2 matrices of dim.
-        (N x N) forming an orthonormal basis with respect to the Hilbert-Schmidt scalar product.
-        These matrices are given by: Id(N) + inf. gen. SU (N).
-            Parameters:
-                        N : int
-                            Dimension of the matrix space.
-            Returns:
-                    out : ndarray
-                          Array of dimension (N**2 x N x N) made up of N**2 base matrices that are
-                          orthonormal with respect to the Hilbert-Schmidt scalar product.
+    r''' Function that creates an array of dimension :math:`(N^2 \times N \times N)` made up of :math:`N^2` matrices of dim.
+        :math:`(N \times N)` forming an orthonormal basis with respect to the Hilbert-Schmidt scalar product.
+        These matrices are given by: :math:`\mathbb{1}(N)` + inf. gen. :math:`SU(N)`.
+        
+        Parameters
+        ----------
+        N : int
+            Dimension of the matrix space.
+        
+        Returns
+        -------
+        out : ndarray
+            Array of dimension :math:`(N^2 \times N \times N)` made up of :math:`N^2` base matrices that are
+            orthonormal with respect to the Hilbert-Schmidt scalar product.
     '''
     F_base = np.zeros((N**2,N,N), dtype=complex)
     F_base[0] = (1/np.sqrt(N))*np.eye(N)
@@ -59,17 +67,21 @@ def F_matr_base_hs(N):
     return F_base
 
 def matrix_to_HS(N,matrix):
-    ''' Function that, given an input matrix, returns the vector of the coefficients of the input
+    r''' Function that, given an input matrix, returns the vector of the coefficients of the input
         matrix with respect to the Hilbert-Schmidt basis.
-            Parameters:
-                        N : int
-                            Dimension of the input matrix.
-                        matrix : ndarray
-                                 The input matrix.
-            Returns:
-                    out : 1D array
-                          The vector of the coefficient of the input matrix written with respect to
-                          the Hilbert-Schmidt basis.
+        
+        Parameters
+        ----------
+        N : int
+            Dimension of the input matrix.
+        matrix : ndarray
+            The input matrix.
+        
+        Returns
+        -------
+        out : 1D array
+            The vector of the coefficient of the input matrix written with respect to
+            the Hilbert-Schmidt basis.
     '''
     FF_HS = F_matr_base_hs(N)
     coeff_vect = np.zeros(N**2)
@@ -82,19 +94,23 @@ def matrix_to_HS(N,matrix):
 def Dissipator(N,RM_D,matrix):
     r''' Function that creates the dissipator as a superoperator acting on the input matrix, starting
         from the Kossakowki matrix constructed from a random matrix sampled from the Ginibre ensemble.
-        Here it is ensured that the trace of the Kossakowski matrix is equal to N.
-            Parameters:
-                        N : int
-                            Dimension of the input matrix.
-                        RM_D : ndarray
-                               Random matrix sampled from the Ginibre ensemble.
-                               This matrix can be obtained using the QuTip library in the following way:
-                               RM_D = np.array(qutip.rand_dm_ginibre((N**2-1), rank=None)).
-                        matrix : ndarray
-                                 The input matrix.
-            Returns:
-                    out : ndarray
-                          Output matrix after the action of a random dissipator.
+        Here it is ensured that the trace of the Kossakowski matrix is equal to :math:`N`.
+        
+        Parameters
+        ----------
+        N : int
+            Dimension of the input matrix.
+        RM_D : ndarray
+                Random matrix sampled from the Ginibre ensemble.
+                This matrix can be obtained using the QuTip library in the following way:
+                RM_D = np.array(qutip.rand_dm_ginibre(:math:`(N^2-1)`, rank=None)).
+        matrix : ndarray
+                The input matrix.
+            
+        Returns
+        -------
+        out : ndarray
+            Output matrix after the action of a random dissipator.
     '''
     K = N*RM_D
 
@@ -122,79 +138,92 @@ def Dissipator(N,RM_D,matrix):
     return Diss
 
 def Hamiltonian_part(N,RM_H,matrix):
-    ''' Function that builds the hamiltonian contribution to the Lindbladian, given by the
+    r''' Function that builds the hamiltonian contribution to the Lindbladian, given by the
         commutator between the hamiltonian and the input matrix. This is a superoperator.
-        hbar = 1 required to prevent overflow.
-            Parameters:
-                        N : int
-                            Dimension of the input matrix.
-                        RM_H : ndarray
-                               Random hamiltonian matrix sampled from the GUE ensemble.
-                               This matrix can be obtained using the tenpy library in the following way:
-                               RM_H = tenpy.linalg.random_matrix.GUE((N,N)).
-                        matrix : ndarray
-                                 The input matrix.
-            Returns:
-                    out : ndarray
-                          Output matrix after the action of a random hamiltonian contribution.
+        :math:`\hbar = 1` required to prevent overflow.
+        
+        Parameters
+        ----------
+        N : int
+            Dimension of the input matrix.
+        RM_H : ndarray
+                Random hamiltonian matrix sampled from the GUE ensemble.
+                This matrix can be obtained using the tenpy library in the following way:
+                RM_H = tenpy.linalg.random_matrix.GUE(:math:`(N,N)`).
+        matrix : ndarray
+                The input matrix.
+        Returns
+        -------
+        out : ndarray
+                Output matrix after the action of a random hamiltonian contribution.
     '''
     Hamilt_part = (-1j)*(RM_H@matrix - matrix@RM_H)
 
     return Hamilt_part
 
 def Lindbladian(N,RM_D,RM_H,matrix,alpha,gamma):
-    ''' Function that builds the Lindbladian applied to an input state by adding the hamiltonian
+    r''' Function that builds the Lindbladian applied to an input state by adding the hamiltonian
         contribution, given by the commutator between the hamiltonian and the input matrix,
         and the dissipator. This is a superoperator.
-            Parameters: N : int
-                            Dimension of the input matrix.
-                        RM_D : ndarray
-                                Random matrix sampled from the Ginibre ensemble and used to construct
-                                the dissipator.
-                                This matrix can be obtained using the QuTip library in the following way:
-                                RM_D = np.array(qutip.rand_dm_ginibre((N**2-1), rank=None)).
-                        RM_H : ndarray
-                               Random hamiltonian matrix sampled from the GUE ensemble.
-                               This matrix can be obtained using the tenpy library in the following way:
-                               RM_H = tenpy.linalg.random_matrix.GUE((N,N)).
-                        matrix : ndarray
-                                 The input matrix.
-                        alpha : float
-                                The coefficient that regulates the strenght of the hamiltonian part.
-                        gamma : float
-                                The coefficient that regulates the strenght of the dissipator.
-            Returns:
-                    out : ndarray
-                          Output matrix after the action of a random Lindbladian.
+        
+        Parameters
+        ----------
+        
+        N : int
+            Dimension of the input matrix.
+        RM_D : ndarray
+                Random matrix sampled from the Ginibre ensemble and used to construct
+                the dissipator.
+                This matrix can be obtained using the QuTip library in the following way:
+                RM_D = np.array(qutip.rand_dm_ginibre(:math:`(N^2-1)`, rank=None)).
+        RM_H : ndarray
+                Random hamiltonian matrix sampled from the GUE ensemble.
+                This matrix can be obtained using the tenpy library in the following way:
+                RM_H = tenpy.linalg.random_matrix.GUE(:math:`(N,N)`).
+        matrix : ndarray
+                The input matrix.
+        alpha : float
+                The coefficient that regulates the strenght of the hamiltonian part.
+        gamma : float
+                The coefficient that regulates the strenght of the dissipator.
+        
+        Returns
+        -------
+        out : ndarray
+            Output matrix after the action of a random Lindbladian.
     '''
     L = alpha*Hamiltonian_part(N,RM_H,matrix) + gamma*Dissipator(N,RM_D,matrix)
 
     return L
 
 def Lindbladian_matrix(N,RM_D,RM_H,alpha,gamma):
-    ''' Function that calculates the matrix associated with Lindblad’s superoperator written with
-        respect to the Hilbert-Schmidt matrix base. Called F[m] these matrices, for m = 1,...,N**2,
-        the elements of the Lindbladian matrix are: L[m,m]=Tr(F[m]L(F[n])).
-            Parameters:
-                        N : int
-                            Dimension of the input matrix.
-                        RM_D : ndarray
-                               Random matrix sampled from the Ginibre ensemble and used to construct
-                               the dissipator.
-                               This matrix can be obtained using the QuTip library in the following way:
-                               RM_D = np.array(qutip.rand_dm_ginibre((N**2-1), rank=None)).
-                        RM_H : ndarray
-                               Random hamiltonian matrix sampled from the GUE ensemble.
-                               This matrix can be obtained using the tenpy library in the following way:
-                               RM_H = tenpy.linalg.random_matrix.GUE((N,N)).
-                        alpha : float
-                                The coefficient that regulates the strenght of the hamiltonian part.
-                        gamma : float
-                                The coefficient that regulates the strenght of the dissipator.
-            Returns:
-                    out : ndarray
-                          Lindbladian matrix of dimension (N**2 x N**2), written in the Hilbert-Schmidt
-                          matrix base.
+    r''' Function that calculates the matrix associated with Lindblad’s superoperator written with
+        respect to the Hilbert-Schmidt matrix base. Called :math:`F[m]` these matrices, for :math:`m = 1,\dots,N^2`,
+        the elements of the Lindbladian matrix are: :math:`\mathcal{L}[m,m]=Tr(F[m]L(F[n]))`.
+        
+        Parameters
+        ----------
+        N : int
+            Dimension of the input matrix.
+        RM_D : ndarray
+                Random matrix sampled from the Ginibre ensemble and used to construct
+                the dissipator.
+                This matrix can be obtained using the QuTip library in the following way:
+                RM_D = np.array(qutip.rand_dm_ginibre(:math:`(N^2-1)`, rank=None)).
+        RM_H : ndarray
+                Random hamiltonian matrix sampled from the GUE ensemble.
+                This matrix can be obtained using the tenpy library in the following way:
+                RM_H = tenpy.linalg.random_matrix.GUE(:math:`(N,N)`).
+        alpha : float
+                The coefficient that regulates the strenght of the hamiltonian part.
+        gamma : float
+                The coefficient that regulates the strenght of the dissipator.
+        
+        Returns
+        -------
+        out : ndarray
+                Lindbladian matrix of dimension :math:`(N^2 x N^2)`, written in the Hilbert-Schmidt
+                matrix base.
     '''
     FF = F_matr_base_hs(N)
     lindbladian_matr = np.zeros((N**2,N**2), dtype=complex)
@@ -207,19 +236,23 @@ def Lindbladian_matrix(N,RM_D,RM_H,alpha,gamma):
     return lindbladian_matr
 
 def phi_t(N,Lind_matr,t):
-    ''' Function that builds the CPT channel Phi(t) associated with an input Lindbladian L
-        as Phi(t) = exp(L*t).
-            Parameters:
-                        N : int
-                            Dimension of the input matrix.
-                        Lind_matr : ndarray
-                                    Random Lindbladian matrix of dimension (N**2 x N**2).
-                        t : float
-                            Time at which the Phi(t) operator is evaluated.
-            Returns:
-                    out : ndarray
-                          Matrix of dimension (N**2 x N**2) that represents the CPT channel
-                          associated to the random Lindbladian matrix.
+    r''' Function that builds the CPT channel :math:`\Phi(t)` associated with an input Lindbladian :math:`\mathcal{L}`
+        as :math:`\Phi(t) = e^{(\mathcal{L} t)}`.
+
+        Parameters
+        ----------
+        N : int
+            Dimension of the input matrix.
+        Lind_matr : ndarray
+                    Random Lindbladian matrix of dimension :math:`(N^2 \times N^2)`.
+        t : float
+            Time at which the :math:`\Phi(t)` operator is evaluated.
+        
+        Returns
+        -------
+        out : ndarray
+                Matrix of dimension :math:`(N^2 \times N^2)` that represents the CPT channel
+                associated to the random Lindbladian matrix.
     '''
     LL = Lind_matr
     lind_eigval, lind_eigvect = np.linalg.eig(LL)
@@ -231,11 +264,19 @@ def phi_t(N,Lind_matr,t):
     return phi_t
 
 def max_ent(N):
-    ''' Function that constructs the density matrix associated to the maximum entangled state
-        of an Hilbert space of dimension N.
-            Parameters:
-                        N : int
-                            Dimension of the Hilbert space.
+    r''' Function that constructs the density matrix associated to the maximum entangled state,
+        having an Hilbert space of dimension :math:`N`.
+        
+        Parameters
+        ----------
+        N : int
+            Dimension of the Hilbert space.
+        
+        Returns
+        -------
+        out : ndarray
+                Matrix of dimension :math:`(N^2 \times N^2)` that represents the density matrix of a 
+                maximally entangled state.
     '''
     summ_outer = np.zeros((N**2,N**2))
 
@@ -247,18 +288,22 @@ def max_ent(N):
     return summ_outer
 
 def choi_st(N,Lind_matr,t):
-    ''' Function that calculates the Choi-state associated to the CPT channel Phi(t).
-            Parameters:
-                        N : int
-                            Dimension of the input matrix.
-                        Lind_matr : ndarray
-                                    Random Lindbladian matrix of dimension (N**2 x N**2).
-                        t : float
-                            Time at which the Phi(t) operator is evaluated.
-            Returns:
-                    out : ndarray
-                          Matrix of dimension (N**2 x N**2) that represents the CPT channel
-                          associated to the random Lindbladian matrix.
+    r''' Function that calculates the Choi-state associated to the CPT channel :math:`\Phi(t)`.
+        
+        Parameters
+        ----------
+        N : int
+            Dimension of the input matrix.
+        Lind_matr : ndarray
+                    Random Lindbladian matrix of dimension :math:`(N^2 \times N^2)`.
+        t : float
+            Time at which the :math:`\Phi(t)` operator is evaluated.
+        
+        Returns
+        -------
+        out : ndarray
+            Matrix of dimension :math:`(N^2 \times N^2)` that represents the Choi-state associated to
+            the CPT channel :math:`\Phi(t)` obtained from the Lindbladian matrix in input.
     '''
     phi_t_HS = np.zeros((N**2,N**2), dtype=complex)
 
@@ -289,18 +334,22 @@ def choi_st(N,Lind_matr,t):
     return choi_state
 
 def choi_transp(N,Lind_matr,t):
-    ''' Function that calculates the transposed Choi-state with respect to system B.
-            Parameters:
-                        N : int
-                            Dimension of the input matrix.
-                        Lind_matr : ndarray
-                                    Random Lindbladian matrix of dimension (N**2 x N**2).
-                        t : float
-                            Time at which the Phi(t) operator is evaluated.
-            Returns:
-                    out : ndarray
-                          Matrix of dimension (N**2 x N**2) that represents the Choi-state
-                          transposed with respect to system B.
+    r''' Function that calculates the transposed Choi-state with respect to system B.
+        
+        Parameters
+        ----------
+        N : int
+            Dimension of the input matrix.
+        Lind_matr : ndarray
+                    Random Lindbladian matrix of dimension :math:`(N^2 \times N^2)`.
+        t : float
+            Time at which the :math:`\Phi(t)` operator is evaluated.
+        
+        Returns
+        -------
+        out : ndarray
+                Matrix of dimension :math:`(N^2 \times N^2)` that represents the Choi-state
+                transposed with respect to system B.
     '''
     choi_state = qutip.Qobj(choi_st(N,Lind_matr,t), dims = [[N,N],[N,N]], shape = (N**2,N**2))
     choi_state_transpose_B = qutip.partial_transpose(choi_state, [0,1])
@@ -308,18 +357,23 @@ def choi_transp(N,Lind_matr,t):
     return np.array(choi_state_transpose_B)
 
 def negat_ent(N,Lind_matr,t):
-    ''' Function that calculates the negativity of entanglement, defined as half of the sum of
+    r''' Function that calculates the negativity of entanglement, defined as half of the sum of
         the differences between the module of eigenvalues of the transposed choi-state and the
         eigenvalues themselves.
-            Parameters: N : int
-                            Dimension of the input matrix.
-                        Lind_matr : ndarray
-                                    Random Lindbladian matrix of dimension (N**2 x N**2).
-                        t : float
-                            Time at which the Phi(t) operator is evaluated.
-            Returns:
-                    out : float
-                          The negativity of the entanglement.
+        
+        Parameters
+        ----------
+        N : int
+            Dimension of the input matrix.
+        Lind_matr : ndarray
+                    Random Lindbladian matrix of dimension :math:`(N^2 \times N^2)`.
+        t : float
+            Time at which the :math:`\Phi(t)` operator is evaluated.
+        
+        Returns
+        -------
+        out : float
+                The negativity of the entanglement.
     '''
     choi_trans_eigval = np.linalg.eigvals(choi_transp(N,Lind_matr,t))
     neg_ent=0
