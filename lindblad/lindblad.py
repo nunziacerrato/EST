@@ -199,7 +199,7 @@ def Lindbladian(N,RM_D,RM_H,matrix,alpha,gamma):
 def Lindbladian_matrix(N,RM_D,RM_H,alpha,gamma):
     r''' Function that calculates the matrix associated with Lindblad’s superoperator written with
         respect to the Hilbert-Schmidt matrix base. Called :math:`F[m]` these matrices, for :math:`m = 1,\dots,N^2`,
-        the elements of the Lindbladian matrix are: :math:`\mathcal{L}[m,m]=Tr(F[m]L(F[n]))`.
+        the elements of the Lindbladian matrix are: :math:`\mathcal{L}[m,n]=Tr(F[m]L(F[n]))`.
         
         Parameters
         ----------
@@ -264,7 +264,8 @@ def phi_t(N,Lind_matr,t):
     return phi_t
 
 def max_ent(N):
-    r''' Function that constructs the density matrix associated to the maximum entangled state,
+    r''' Function that constructs the density matrix associated to the maximally entangled state
+        :math:`\ket{\Psi}_{AB} = \frac{1}{\sqrt{N}}\sum_{k=1}^{N} \ket{k}_{A} \otimes \ket{k}_{B}`,
         having an Hilbert space of dimension :math:`N`.
         
         Parameters
@@ -275,8 +276,8 @@ def max_ent(N):
         Returns
         -------
         out : ndarray
-                Matrix of dimension :math:`(N^2 \times N^2)` that represents the density matrix of a 
-                maximally entangled state.
+                Matrix of dimension :math:`(N^2 \times N^2)` that represents the density matrix of 
+                the maximally entangled state.
     '''
     summ_outer = np.zeros((N**2,N**2))
 
