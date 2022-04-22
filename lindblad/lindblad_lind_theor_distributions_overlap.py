@@ -75,7 +75,7 @@ if False:
         plt.show()
 
 # Layout 3x2 with both theoretical pdfs overlapped
-if True:
+if False:
     k_list = [0,0.5,1,10,100,1000]
     fig_hist, ax_hist = plt.subplots(nrows=3, ncols=2)
     
@@ -139,4 +139,93 @@ if True:
             ax.label_outer()
         # ax_hist.legend(fontsize = 14)
     plt.show()
+
+# Layout 2 plots 3x1 with both theoretical pdfs overlapped - plot with widths and heights specified
+if True:
+    k_list_ = [0,0.5,1,10,100,1000]
+    path = 'C:\\Users\\cerra\\Documents\\GitHub\\lindblad_thesis_latex\\Tesi_Plot\\Fit_Histograms'
+    heights = [2.5,2.5,2.5]
+    widths = [5]
+    
+    # Lognormal parameter
+    scale_location_lognormal_ = [-1.32915,-1.5426,-1.86269,-3.30639,-3.36680,-3.35909] # scale = exp(location)
+    loc_threshold_lognormal_ = [0.78692,0.79677,0.80338,0.82249,0.82264,0.82252] # loc
+    sigma_scale_lognormal_ = [0.49121,0.49246,0.54827,1.10641,1.15127,1.14009] # sigma or s
+
+    # Gamma parameter
+    shape_gamma_ = [2.89677,2.89435,2.45291,0.93225,0.88896,0.89219]
+    loc_threshold_gamma_ = [0.83435,0.83462,0.82410,0.82813,0.82400,0.82400]
+    scale_gamma_ = [0.08656,0.07022,0.06334,0.06660,0.06836,0.06776]
+
+    grid_list = [1,2]
+    for i in grid_list:
+        fig_hist = plt.figure(constrained_layout=True,figsize=(7,9))
+        spec_hist = fig_hist.add_gridspec(nrows=3, ncols=1, width_ratios=widths,
+                            height_ratios=heights)
+        if i == 1:
+            k_list = k_list_[0:3]
+            print(k_list)
+            scale_location_lognormal = scale_location_lognormal_[0:3]
+            loc_threshold_lognormal = loc_threshold_lognormal_[0:3]
+            sigma_scale_lognormal = sigma_scale_lognormal_[0:3]
+            shape_gamma = shape_gamma_[0:3]
+            loc_threshold_gamma = loc_threshold_gamma_[0:3]
+            scale_gamma = scale_gamma_[0:3]
+        if i == 2:
+            k_list = k_list_[3:]
+            print(k_list)
+            scale_location_lognormal = scale_location_lognormal_[3:]
+            loc_threshold_lognormal = loc_threshold_lognormal_[3:]
+            sigma_scale_lognormal = sigma_scale_lognormal_[3:]
+            shape_gamma = shape_gamma_[3:]
+            loc_threshold_gamma = loc_threshold_gamma_[3:]
+            scale_gamma = scale_gamma_[3:]
+
+        for k_value in k_list:
+            alpha = k_value*gamma
+            k_index = k_list.index(k_value)
+            
+            fig_hist.suptitle(fr'Layout $\tau_{{ent}}$ distributions with theoretical fit pdfs overlapped',\
+                                fontsize = 10)
+            # Create a DataFrame from the excel file where all the data are saved
+            df_fromexcel = pd.read_excel(f'{common_path}\\{fixed}_fixed_comparable_data\\{fixed}={fixed_val}\\'\
+                f'Lindblad_eigvals_t_ent_{fixed}_fixed_k_{k_value}_{iterations}_iterations_N_{N}.xlsx')
+
+            # Access to the column 't_ent' and drop NaN values if present
+            t_ent_values = df_fromexcel['t_ent'].dropna().values
+            t_ent_range = np.linspace(min(t_ent_values), max(t_ent_values), 500)
+
+            # Compute the histogram of t_ent values
+            ax1 = fig_hist.add_subplot(spec_hist[k_index])
+            ax1.hist(t_ent_values, bins = 'auto', histtype='bar', ec="black",\
+                fc="cornflowerblue", alpha=0.5, density = True,\
+                label = fr'Data - k={k_value}, $\alpha$={alpha}, $\gamma$={gamma}')
+            
+            # Access to the Lognormal parameter and plot the Lognormal pdf
+            sigma = sigma_scale_lognormal[k_index]
+            loc = loc_threshold_lognormal[k_index]
+            scale = np.exp(scale_location_lognormal[k_index])
+
+            rv_lognorm = scipy.stats.lognorm(sigma, loc = loc, scale = scale)
+            ax1.plot(t_ent_range, rv_lognorm.pdf(t_ent_range), 'blue',\
+                                                linewidth=2, label='3-parameter Lognormal pdf')
+
+            # Access to the Gamma parameter and plot the Gamma pdf
+            shape = shape_gamma[k_index]
+            loc = loc_threshold_gamma[k_index]
+            scale = scale_gamma[k_index]
+
+            rv_gamma = scipy.stats.gamma(shape, loc = loc, scale = scale)
+            if k_value == 1000 or k_value == 100:
+                t_ent_range = np.linspace(min(t_ent_values)+0.0015, max(t_ent_values), 500)
+            # scipy.stats.gamma.ppf(0.01, shape, loc = loc, scale = scale)
+            ax1.plot(t_ent_range, rv_gamma.pdf(t_ent_range), 'red',\
+                                                linewidth=2, label='3-parameter Gamma pdf')
+            if k_value == 1 or k_value == 1000:
+                ax1.set_xlabel(fr'$\tau_{{ent}}$', fontsize = 8)
+            ax1.set_ylabel('Density', fontsize = 8)
+            ax1.legend(fontsize = 7)
+            
+        fig_hist.savefig(f"{path}\\Layout_6x1_total_pdfs_overlapped_plot{i}")
+        # plt.show()
 
