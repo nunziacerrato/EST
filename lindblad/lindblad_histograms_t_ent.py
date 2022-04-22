@@ -16,10 +16,10 @@ iterations = 20000
 alpha, gamma = 1, 1
 median_ref = 1
 
-fixed_list = ['g']
+fixed_list = ['a']
 fixed_val = 1
 k_list_alpha = [0.1,0.3,0.5,0.7,1,1.5,2]#,3,5,7,10]
-k_list_gamma = [0,0.1,0.3,0.5,0.7,1.5,5,10,50,100]#,250,500,1000]
+k_list_gamma = [0,0.1,0.3,0.5,0.7,1,1.5,5,10,50,100]#,250,500,1000]
 
 common_path = "C:\\Users\\cerra\\Documents\\GitHub\\lindblad_data"
 
@@ -38,7 +38,8 @@ if False:
         
         fig_hist, ax_hist = plt.subplots(figsize=(15,10))
         ax_hist.set_title(fr'$\tau_{{ent}}$ distributions, '\
-                          fr'N = {N}, {greek_fixed} = {fixed_val} fixed, {iterations} iterations')
+                          fr'N = {N}, {greek_fixed} = {fixed_val} fixed, {iterations} iterations',\
+                          fontsize=20)
 
         for k_value in k_list:
             if fixed == 'a':
@@ -72,9 +73,9 @@ if False:
                     fr'$\overline{{ \tau}}_{{ent}}$ = {mean_t_ent}, $\sigma(\tau_{{ent}})$'\
                     fr'= {std_t_ent}, Me($\tau_{{ent}}$) = {median_t_ent}, '\
                     fr'min($\tau_{{ent}}$) = {min_t_ent}')
-            ax_hist.set_xlabel(\
-                            fr'$\tau_{{ent}}$')
-            ax_hist.legend()
+            ax_hist.set_xlabel(fr'$\tau_{{ent}}$', fontsize = 18)
+            ax_hist.set_ylabel(fr'Density', fontsize = 18)
+            ax_hist.legend(fontsize = 14)
     # plt.show()
 
 
@@ -178,7 +179,9 @@ if False:
 
 # Rescaled histograms for fixed 'a' or 'g': t --> t/coeff with coeff = Me(t)/Me_ref;
 # The histograms are rescaled so that their median is equal to one.
-if False:
+if True:
+    k_list_alpha = [0.001,0.1,0.3,0.5,0.7,1,1.5,2]
+    k_list_gamma = [0,0.1,0.3,0.5,0.7,1,1.5,5,10,50,100,250,500,1000]
     for fixed in fixed_list:
         if fixed == 'a':
             greek_fixed = r'$\alpha$'
@@ -188,8 +191,8 @@ if False:
             k_list = k_list_gamma
         
         fig_hist_resc, ax_hist_resc = plt.subplots(figsize=(15,10))
-        fig_hist_resc.suptitle(fr'Rescaled $\tau_{{ent}}$ distributions, $Me_{{ref}}$ = 1, N = {N}, '\
-                    fr'{greek_fixed} fixed, {iterations} iterations')
+        ax_hist_resc.set_title(fr'Rescaled $\tau_{{ent}}$ distributions, N = {N}, '\
+                    fr'{greek_fixed} fixed, {iterations} iterations', fontsize = 20)
         
         for k_value in k_list:
             if fixed == 'a':
@@ -230,8 +233,9 @@ if False:
                         fr'$\gamma$ = {np.round(gamma,2)}'+ '\n' + \
                         fr'$\overline{{ \tau}}_{{ent}}$ = {mean_t_ent_resc}, $\sigma(\tau_{{ent}})$'\
                         fr'= {std_t_ent_resc}, Me($\tau_{{ent}}$) = {median_t_ent_resc}')
-            ax_hist_resc.set_xlabel(fr'$\tau_{{ent}}/[Me(\tau_{{ent}})/Me_{{ref}}]$')
-            ax_hist_resc.legend()
+            ax_hist_resc.set_xlabel(fr'$\tau_{{ent}}/Me(\tau_{{ent}})$', fontsize = 18)
+            ax_hist_resc.set_ylabel(fr'Density', fontsize = 18)
+            ax_hist_resc.legend(fontsize = 12)
     # plt.show()
 
 # Normalized histograms for fixed 'a' or 'g': t --> (t - t_min)/(t_max - t_min);
