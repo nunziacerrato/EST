@@ -277,10 +277,58 @@ def mean_t_ent_plot(x_values, k_max, plot_res = True):
     plt.show()
 
 
+def plot_fit_functions(x_values, k_max,):
+    ''' Plot the fit functions for mean(t_ent), Me(t_ent), min(t_ent) with optimal fit parameters.
+    '''
+    index_k_max = x_values.index(k_max)
+    x_values = x_values[:index_k_max+1]
+    x_values_continue = np.linspace(x_values[0], x_values[-1], 500)
+    
+    # mean(t_ent) fit parameters and plot of the fit function
+    mean_Theta1 = 1.08166
+    mean_Theta2 = 0.88504
+    mean_Theta3 = 0.97505
+
+    plt.plot(x_values_continue, fit_function(x_values_continue,mean_Theta1,mean_Theta2,mean_Theta3),\
+        label = fr'mean($\tau_{{ent}}$)')
+        # + '\n'+ \
+        # fr'$\Theta_{{1}}^{{(mean(\tau_{{ent}}))}}$ = {mean_Theta1}, $\Theta_{{2}}^{{(mean(\tau_{{ent}}))}}$'\
+        # fr' = {mean_Theta2}, $\Theta_{{3}}^{{(mean(\tau_{{ent}}))}}$ = {mean_Theta3}')
+
+    # Me(t_ent) fit parameters and plot of the fit function
+    Me_Theta1 = 1.05137
+    Me_Theta2 = 0.85986
+    Me_Theta3 = 1.05223
+
+    plt.plot(x_values_continue, fit_function(x_values_continue,Me_Theta1,Me_Theta2,Me_Theta3),\
+        label = fr'Me($\tau_{{ent}}$)')
+        # + '\n'+ \
+        # fr'$\Theta_{{1}}^{{(Me(\tau_{{ent}}))}}$ = {Me_Theta1}, $\Theta_{{2}}^{{(Me(\tau_{{ent}}))}}$'\
+        # fr' = {Me_Theta2}, $\Theta_{{3}}^{{(Me(\tau_{{ent}}))}}$ = {Me_Theta3}')
+
+    # min(t_ent) fit parameters and plot of the fit function
+    min_Theta1 = 0.837178
+    min_Theta2 = 0.823919
+    min_Theta3 = 0.697450
+    
+    plt.plot(x_values_continue, fit_function(x_values_continue,min_Theta1,min_Theta2,min_Theta3),\
+        label = fr'min($\tau_{{ent}})$')
+        # + '\n'+ \
+        # fr'$\Theta_{{1}}^{{(min(\tau_{{ent}}))}}$ = {min_Theta1}, $\Theta_{{2}}^{{(min(\tau_{{ent}}))}}$'\
+        # fr' = {min_Theta2}, $\Theta_{{3}}^{{(min(\tau_{{ent}}))}}$ = {min_Theta3}')
+    
+    plt.xlabel(fr'$\alpha$', fontsize = 18)
+    # plt.ylabel(fr'$<min(\tau_{{ent}})>$', fontsize = 18)
+    plt.title(fr'Fit functions for mean($\tau_{{ent}})$, Me($\tau_{{ent}})$, min($\tau_{{ent}})$', fontsize = 20)
+    plt.legend(fontsize = 16)
+    plt.show()
+
+
 if __name__ == '__main__':
     alpha_values = list(df_fromexcel['alpha'])
     k_max = 30
-    min_t_ent_plot(alpha_values, k_max)
-    Me_t_ent_plot(alpha_values, k_max)
-    mean_t_ent_plot(alpha_values, k_max)
+    # min_t_ent_plot(alpha_values, k_max)
+    # Me_t_ent_plot(alpha_values, k_max)
+    # mean_t_ent_plot(alpha_values, k_max)
+    plot_fit_functions(alpha_values, k_max)
 
