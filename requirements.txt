@@ -1,4 +1,4 @@
 numpy
 qutip
-physics-tenpy==0.8.4
+physics-tenpy
 cssselect
