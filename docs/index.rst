@@ -15,11 +15,9 @@ Markovian noise (a realistic model that is commonly used to represent the action
 environment that acts on the system without keeping track of the history of the dynamical process).
 The main source of inspiration for this project were the following works:
 
-* Gatto D., De Pasquale A., and Giovannetti V., Degradation of Entanglement in Markovian Noise,
-Phys. Rev. A, Vol. 99, N. 3, 2019, 032307.
+* Gatto D., De Pasquale A., and Giovannetti V., Degradation of Entanglement in Markovian Noise, Phys. Rev. A, Vol. 99, N. 3, 2019, 032307.
 
-* Denisov S., Laptyeva T., Tarnowski W., Chruściński D., and Życzkowski K.,
-Universal Spectra of Random Lindblad Operators, Phys. Rev. Lett., Vol. 123, N. 14, 2019, 140403.
+* Denisov S., Laptyeva T., Tarnowski W., Chruściński D., and Życzkowski K., Universal Spectra of Random Lindblad Operators, Phys. Rev. Lett., Vol. 123, N. 14, 2019, 140403.
 
 
 .. toctree::
