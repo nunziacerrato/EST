@@ -69,7 +69,7 @@ def F_matr_base_hs(N):
 
 def matrix_to_HS(N,matrix):
     r''' Function that, given an input matrix, returns the vector which represents 
-         the input matrix with respect to the Hilbert-Schmidt basis.
+        the input matrix with respect to the Hilbert-Schmidt basis.
         
         Parameters
         ----------
