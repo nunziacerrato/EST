@@ -1,4 +1,5 @@
-''' This library implements some basic functions to study the properties of an open quantum system.
+''' This library implements some basic functions to study the properties of an open quantum system
+    and arrive at the computation of the negativity of entanglement.
 '''
 import numpy as np
 import qutip
