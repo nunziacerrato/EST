@@ -115,10 +115,10 @@ if True:
 
 
         p1 = sns.jointplot(x=inverse_eigval_max_list, y=t_ent_list, kind='reg')
-        p1.fig.suptitle(fr'1/|$\lambda_{{max}}$| vs $\tau_{{ent}}$'\
-            fr' - distributions and correlations - k={k}', fontsize=28)
+        p1.fig.suptitle(fr'$\tau_{{ent}}$ as a function of 1/|$\lambda_{{max}}$|'\
+            fr' - k={k}', fontsize=35)
         p1.ax_joint.legend([f'Spearman correlation = {np.round(correlation_spear[0],2)}; p-value = {correlation_spear[1]:.1E}'],\
-            fontsize=20)
+            fontsize=30)
 
         p1.fig.subplots_adjust(top=0.93)
 
