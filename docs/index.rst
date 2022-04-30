@@ -9,9 +9,9 @@ Welcome to EST's documentation!
 EST is a library born for a Master Thesis at University of Pisa with the aim of studying the effect 
 of noise on the dynamical evolution of entanglement.
 
-EST stands for Entanglement Survival Time as the aim of this project was the computation 
-of this quantity for a system of two maximally entangled qubits subjected to the action of a (local) 
-Markovian noise (a realistic model that is commonly used to represent the action of an external 
+EST stands for Entanglement Survival Time. The aim of this project was the derivation and analysis of EST
+distributions for a system of two maximally entangled qubits subjected to the action of an ensemble of (local) 
+Markovian noises (a realistic model that is commonly used to represent the action of an external 
 environment that acts on the system without keeping track of the history of the dynamical process).
 The main source of inspiration for this project were the following works:
 
