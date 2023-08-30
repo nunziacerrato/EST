@@ -9,10 +9,6 @@ from lindblad import *
 
 k_list_alpha = [0.1,0.3,0.5,0.7,1,1.5,2]
 k_list_gamma = [0,0.1,0.3,0.5,0.7,1,1.5,5,10,50,100,250,500,1000]
-# k_list_gamma = [0,1,1000]
-# k_list_new_terms_min5 = [2,2.5,3,3.5,4]
-# k_list_new_terms = [15,20,25,30,35,40,45]
-# k_list_more_precision_t_step = [1.5,2,3,4,5,7,10,15]
 
 def lindblad_savedata(k_value):
 
