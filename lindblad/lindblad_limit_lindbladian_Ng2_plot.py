@@ -77,7 +77,7 @@ if True:
     gamma = fixed_val
 
     fig_hist, ax_hist = plt.subplots(figsize=(15,10))
-    ax_hist.set_title(r'$\bf{P}$$_{ent}^{(k)}(x)$, '\
+    ax_hist.set_title(r'$\bf{P}$$_{ppt}^{(k)}(x)$, '\
                       fr'N = {N}, {iterations} iterations',\
                       fontsize = 35)
     
@@ -104,7 +104,7 @@ if True:
     #         fr'= {std_t_ent}, Me($\tau_{{ent}}$) = {median_t_ent}, '\
     #         fr'min($\tau_{{ent}}$) = {min_t_ent}')
     ax_hist.hist(t_ent_values, bins = 'auto', histtype='step', fill = False,\
-            density = True, label = r'$\bf{P}$$_{ent}^{(k=1000)}(x)$')
+            density = True, label = r'$\bf{P}$$_{ppt}^{(k=1000)}(x)$')
     ax_hist.set_xlabel('x', fontsize = 35)
         
     df_fromexcel_lim = pd.read_excel(f'{common_path}\\{fixed}={fixed_val}_fixed\\Lindblad_eigvals_'\
@@ -123,7 +123,7 @@ if True:
     #             fr'= {std_t_ent}, Me($\tau_{{ent}}$) = {median_t_ent}, '\
     #             fr'min($\tau_{{ent}}$) = {min_t_ent}')
     ax_hist.hist(t_ent_values_lim, bins = 'auto', histtype='step', fill = False,\
-                density = True, label = r'$\bf{P}$$_{ent}^{(\infty)}(x)$')
+                density = True, label = r'$\bf{P}$$_{ppt}^{(\infty)}(x)$')
     
     ax_hist.tick_params(labelsize=30)
     ax_hist.legend(fontsize=35)

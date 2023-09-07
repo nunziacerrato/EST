@@ -20,7 +20,7 @@ k_list = [0,0.1,0.3,0.5,0.7,1.5,5,10,50,100]
 common_path = "C:\\Users\\cerra\\Documents\\GitHub\\lindblad_data"
 
 # Histograms for fixed 'g' and different values of 'a'
-if True:        
+if True: 
     fig_hist, ax_hist = plt.subplots(figsize=(15,10))
     ax_hist.set_title(fr'$\tau_{{ent}}$ distributions, '\
                         fr'N = {N}, {greek_fixed} = {fixed_val} fixed, {iterations} iterations',\
